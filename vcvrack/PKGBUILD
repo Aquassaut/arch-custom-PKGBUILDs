@@ -1,0 +1,35 @@
+# Loosely based on AUR packaged maintained by Miroslav Ko≈°k√
+
+pkgname='vcvrack'
+pkgver=0.6.2b
+pkgrel=1
+pkgdesc='Open-source virtual modular synthesizer'
+url='https://vcvrack.com/'
+license=(BSD)
+arch=(i686 x86_64)
+depends=(curl gtk2 jansson libzip openssl speexdsp
+    libxi libxrandr libxinerama libxcursor libgl
+    jack libpulse)
+
+source=(
+    vcvrack.sh
+    vcvrack.png
+    vcvrack.desktop
+    https://vcvrack.com/downloads/Rack-${pkgver}-lin.zip
+)
+sha256sums=(
+    ed2da5d924a381cd50125db199578c15bc95c18be716abbd3ff310bbcf6773c0
+    bba6b61c7c464e34ae5020be38453547df1ea64d0aa80af5027a7bf955ac2001
+    588d219f18c512eabe219251464d3799d970f80d49f609c1a7a627555e3f5cfa
+    5f4a1ef666aafbf9581965d061d44119ae18b36485bada682d0de42c3a415fb3
+)
+
+package() {
+    install -Dm755 "$srcdir/vcvrack.sh" "$pkgdir/usr/bin/vcvrack"
+    install -Dm644 -t "$pkgdir/usr/share/icons/hicolor/256x256/apps/" "$srcdir/$pkgname.png" 
+    install -Dm755 -t "$pkgdir/usr/share/applications/" "$srcdir/$pkgname.desktop"
+    install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" Rack/LICENSE*
+    install -dm644 "$pkgdir/opt/$pkgname"
+    cp -a Rack/* "$pkgdir/opt/$pkgname"
+    chmod -R 755 "$pkgdir/opt/$pkgname"
+}
