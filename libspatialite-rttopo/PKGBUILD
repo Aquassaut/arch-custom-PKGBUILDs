@@ -1,0 +1,28 @@
+# Maintainer: Jérémy Autran <jeremy.autran@gmail.com>
+# Based on work by Jaroslav Lichtblau, Brian Galey and Pietro Zambelli on vanilla libspatialite PKGBUILD
+
+pkgname=libspatialite-rttopo
+_pkgname=libspatialite
+pkgver=4.4.0RC1
+_pkgver=4.4.0-RC1
+pkgrel=1
+pkgdesc="SQLite extension to support spatial data types and operations, with librttopo support"
+arch=('i686' 'x86_64')
+url="https://www.gaia-gis.it/fossil/libspatialite"
+license=('MPL' 'GPL' 'LGPL')
+depends=('geos' 'libfreexl' 'libxml2' 'proj' 'sqlite' 'librttopo')
+provides=('libspatialite')
+conflicts=('libspatialite')
+source=(http://www.gaia-gis.it/gaia-sins/libspatialite-sources/$_pkgname-$_pkgver.tar.gz)
+sha256sums=('80f7fff0a147044c5eb197e565f598ac1f137d86d0a548cbc8f52fb7ff7cac68')
+
+build() {
+  cd "${srcdir}"/$_pkgname-$_pkgver
+  ./configure --prefix=/usr --enable-libxml2 --enable-rttopo
+  make
+}
+
+package() {
+  cd "${srcdir}"/$_pkgname-$_pkgver
+  make DESTDIR="${pkgdir}" install
+}

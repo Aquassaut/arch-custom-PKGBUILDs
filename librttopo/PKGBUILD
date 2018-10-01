@@ -1,0 +1,25 @@
+# Maintainer: Jérémy Autran <jeremy.autran@gmail.com>
+
+pkgname=librttopo
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="RT Topology Library"
+arch=('i686' 'x86_64')
+url="https://git.osgeo.org/gogs/rttopo/librttopo"
+license=('GPL')
+depends=('geos')
+source=(https://git.osgeo.org/gogs/rttopo/librttopo/archive/librttopo-${pkgver}.tar.gz)
+sha256sums=('45e9e100f0c0f49934c81a9f5690c840d53fdab312a26884d6eaec75fc70b079')
+
+build() {
+  cd "${srcdir}"/$pkgname
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+  make check
+}
+
+package() {
+  cd "${srcdir}"/$pkgname
+  make DESTDIR="${pkgdir}" install
+}
